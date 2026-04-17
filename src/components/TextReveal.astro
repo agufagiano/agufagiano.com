@@ -1,0 +1,143 @@
+---
+/**
+ * TextReveal.astro
+ * ----------------
+ * Revela texto palabra a palabra con GSAP + ScrollTrigger.
+ * 
+ * Props:
+ *   text     — El texto a revelar (string)
+ *   tag      — Elemento HTML: h1 | h2 | h3 | p  (default: "h1")
+ *   delay    — Delay inicial en segundos       (default: 0)
+ *   stagger  — Tiempo entre palabras en seg    (default: 0.06)
+ *   duration — Duración por palabra en seg     (default: 0.7)
+ *   y        — Desplazamiento vertical inicial (default: 40)
+ *   once     — Animar solo la primera vez      (default: true)
+ *   class    — Clases CSS adicionales
+ */
+
+interface Props {
+  text: string;
+  tag?: "h1" | "h2" | "h3" | "h4" | "p" | "span";
+  delay?: number;
+  stagger?: number;
+  duration?: number;
+  y?: number;
+  once?: boolean;
+  class?: string;
+}
+
+const {
+  text,
+  tag: Tag = "h1",
+  delay = 0,
+  stagger = 0.06,
+  duration = 0.7,
+  y = 40,
+  once = true,
+  class: className = "",
+} = Astro.props;
+
+// Dividir el texto en palabras y envolver cada una en un span
+const words = text.split(" ");
+const id = `text-reveal-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<Tag
+  id={id}
+  class={`text-reveal ${className}`}
+  aria-label={text}
+  data-delay={delay}
+  data-stagger={stagger}
+  data-duration={duration}
+  data-y={y}
+  data-once={once}
+>
+  {words.map((word, i) => (
+    <span class="word-wrapper" aria-hidden="true">
+      <span class="word" data-index={i}>{word}</span>
+      {i < words.length - 1 && <span class="word-space">&nbsp;</span>}
+    </span>
+  ))}
+</Tag>
+
+<style>
+  .text-reveal {
+    /* Hereda el estilo del elemento padre sin interferir */
+    display: block;
+  }
+
+  .word-wrapper {
+    display: inline-block;
+    /* overflow: hidden crea el "clip" que oculta la palabra antes de entrar */
+    overflow: hidden;
+    vertical-align: bottom;
+    /* Evita que el overflow hidden rompa el interlineado */
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+  }
+
+  .word {
+    display: inline-block;
+    /* Estado inicial: invisible y desplazada hacia abajo.
+       GSAP sobreescribe esto, pero lo definimos aquí para
+       evitar un flash de contenido antes de que JS cargue */
+    opacity: 0;
+    transform: translateY(var(--word-y, 40px));
+  }
+
+  .word-space {
+    display: inline-block;
+  }
+
+  /* Accesibilidad: respeta preferencia de movimiento reducido */
+  @media (prefers-reduced-motion: reduce) {
+    .word {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function init() {
+    document.querySelectorAll<HTMLElement>(".text-reveal").forEach(container => {
+      const words = container.querySelectorAll(".word");
+      if (!words.length) return;
+
+      const delay    = parseFloat(container.dataset.delay    ?? "0");
+      const stagger  = parseFloat(container.dataset.stagger  ?? "0.06");
+      const duration = parseFloat(container.dataset.duration ?? "0.7");
+      const y        = parseFloat(container.dataset.y        ?? "40");
+      const once     = container.dataset.once !== "false";
+
+      gsap.set(words, { opacity: 0, y });
+
+      gsap.to(words, {
+        opacity: 1,
+        y: 0,
+        duration,
+        delay,
+        stagger,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: container,
+          start: "top 85%",
+          once,
+        },
+      });
+    });
+  }
+
+  // View Transitions support + fallback primera carga
+  document.addEventListener("astro:page-load", init);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+</script>

@@ -1,0 +1,65 @@
+---
+const links = [
+  { href: "#proyectos", label: "Proyectos" },
+  { href: "#sobre-mi",  label: "Sobre mí" },
+  { href: "#contacto",  label: "Contacto" },
+]
+---
+
+<nav>
+  <a href="/" class="logo">TN<span>.</span></a>
+  <ul>
+    {links.map(l => (
+      <li><a href={l.href}>{l.label}</a></li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    mix-blend-mode: multiply;
+  }
+
+  .logo {
+    font-family: var(--fuente-display);
+    font-size: 1.4rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+  .logo span { color: var(--acento); }
+
+  ul {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+  }
+
+  a {
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--negro);
+    position: relative;
+  }
+  a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 1px;
+    background: var(--acento);
+    transition: width 0.3s ease;
+  }
+  a:hover::after { width: 100%; }
+
+  @media (max-width: 600px) {
+    nav { padding: 1.5rem 1.5rem; }
+    ul { gap: 1.5rem; }
+  }
+</style>
