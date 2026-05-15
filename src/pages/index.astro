@@ -268,58 +268,74 @@ const marqueeItems = [
       <h2 class="section-title reveal">Contacto</h2>
       <div class="section-line"></div>
     </div>
-    <div class="contact-layout">
-      <div>
-        <h3 class="contact-headline">¿Tienes un<br/><span>proyecto</span><br/>en mente?</h3>
-        <p class="contact-sub">
-          Estoy disponible para proyectos freelance y posiciones full time.<br/>
-          Hablemos sobre cómo puedo ayudarte.
-        </p>
-        <div class="contact-links">
-          <a href="mailto:hola@agufagiano.com" class="contact-link">
-            <span class="contact-link-icon">Email</span>
-            <span class="contact-link-text">hola@agufagiano.com</span>
-          </a>
-          <a href="tel:+34645679769" class="contact-link">
-            <span class="contact-link-icon">Teléfono</span>
-            <span class="contact-link-text">+34 645 679 769</span>
-          </a>
-          <a href="https://www.linkedin.com/in/agustin-fagiano" target="_blank" rel="noopener" class="contact-link">
-            <span class="contact-link-icon">LinkedIn</span>
-            <span class="contact-link-text">agustin-fagiano</span>
-          </a>
-          <a href="https://www.behance.net/agufagiano" target="_blank" rel="noopener" class="contact-link">
-            <span class="contact-link-icon">Behance</span>
-            <span class="contact-link-text">behance.net/agufagiano</span>
-          </a>
-          <a href="https://github.com/agufagiano" target="_blank" rel="noopener" class="contact-link">
-            <span class="contact-link-icon">GitHub</span>
-            <span class="contact-link-text">github.com/agufagiano</span>
-          </a>
-        </div>
-      </div>
-      <form class="contact-form slide-up" name="contacto" method="POST" data-netlify="true" id="contact-form">
-        <input type="hidden" name="form-name" value="contacto" />
-        <div class="form-group">
-          <label class="form-label" for="f-nombre">Nombre</label>
-          <input id="f-nombre" name="nombre" type="text" class="form-input" placeholder="Tu nombre" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="f-email">Email</label>
-          <input id="f-email" name="email" type="email" class="form-input" placeholder="tu@email.com" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="f-mensaje">Mensaje</label>
-          <textarea id="f-mensaje" name="mensaje" class="form-textarea" placeholder="Cuéntame sobre tu proyecto..." required></textarea>
-        </div>
-        <button type="submit" class="form-submit">Enviar mensaje →</button>
-      </form>
+    <div class="contact-top">
+      <h3 class="contact-headline">¿Tienes un<br/><span>proyecto</span><br/>en mente?</h3>
+      <p class="contact-sub">
+        Estoy disponible para proyectos freelance y posiciones full time.<br/>
+        Hablemos sobre cómo puedo ayudarte.
+      </p>
+    </div>
+    <div class="contact-cards">
+      <a href="mailto:hola@agufagiano.com" class="contact-card slide-up">
+        <span class="contact-card-label">Email</span>
+        <span class="contact-card-value">hola@agufagiano.com</span>
+        <span class="contact-card-arrow">→</span>
+      </a>
+      <a href="tel:+34645679769" class="contact-card slide-up">
+        <span class="contact-card-label">Teléfono</span>
+        <span class="contact-card-value">+34 645 679 769</span>
+        <span class="contact-card-arrow">→</span>
+      </a>
+      <a href="https://www.linkedin.com/in/agustin-fagiano" target="_blank" rel="noopener" class="contact-card slide-up">
+        <span class="contact-card-label">LinkedIn</span>
+        <span class="contact-card-value">agustin-fagiano</span>
+        <span class="contact-card-arrow">→</span>
+      </a>
+      <a href="https://www.behance.net/agufagiano" target="_blank" rel="noopener" class="contact-card slide-up">
+        <span class="contact-card-label">Behance</span>
+        <span class="contact-card-value">behance.net/agufagiano</span>
+        <span class="contact-card-arrow">→</span>
+      </a>
+      <a href="https://github.com/agufagiano" target="_blank" rel="noopener" class="contact-card slide-up">
+        <span class="contact-card-label">GitHub</span>
+        <span class="contact-card-value">github.com/agufagiano</span>
+        <span class="contact-card-arrow">→</span>
+      </a>
     </div>
   </section>
 
   <footer>
-    <span class="footer-copy">© <span id="footer-year"></span> Agustín Fagiano · hola@agufagiano.com · Diseñado &amp; desarrollado por AF</span>
-    <span class="footer-logo">AF<span>.</span></span>
+    <div class="footer-main">
+      <div class="footer-brand">
+        <span class="footer-logo">AF<span>.</span></span>
+        <p class="footer-tagline">Diseñador Gráfico &amp; Web<br/>Vigo, España</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Navegación</p>
+        <ul class="footer-col-links">
+          <li><a href="#projects">Proyectos</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#experience">Experiencia</a></li>
+          <li><a href="#education">Educación</a></li>
+          <li><a href="#contact">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Redes</p>
+        <ul class="footer-col-links">
+          <li><a href="https://www.linkedin.com/in/agustin-fagiano" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://www.behance.net/agufagiano" target="_blank" rel="noopener">Behance</a></li>
+          <li><a href="https://github.com/agufagiano" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="mailto:hola@agufagiano.com">hola@agufagiano.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© <span id="footer-year"></span> Agustín Fagiano · Diseñado &amp; desarrollado por AF</span>
+      <span class="footer-available">
+        <span class="footer-dot"></span>Disponible para proyectos
+      </span>
+    </div>
   </footer>
 
 </Base>
@@ -485,43 +501,4 @@ const skillObs = new IntersectionObserver(entries => {
 const skillsSection = document.getElementById('skills');
 if (skillsSection) skillObs.observe(skillsSection);
 
-/* ── FORM ── */
-const contactForm = document.getElementById('contact-form') as HTMLFormElement | null;
-contactForm?.addEventListener('submit', async (e: Event) => {
-  e.preventDefault();
-  const form = e.target as HTMLFormElement;
-  const btn  = form.querySelector<HTMLButtonElement>('.form-submit')!;
-  const original = btn.textContent ?? '';
-  btn.textContent = 'Enviando...';
-  btn.disabled = true;
-
-  try {
-    const res = await fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(new FormData(form) as any).toString(),
-    });
-
-    if (res.ok) {
-      btn.textContent = '¡Enviado! ✓';
-      btn.style.background = 'var(--success)';
-      form.reset();
-      setTimeout(() => {
-        btn.textContent = original;
-        btn.style.background = '';
-        btn.disabled = false;
-      }, 3000);
-    } else {
-      throw new Error('Error de red');
-    }
-  } catch {
-    btn.textContent = 'Error al enviar';
-    btn.style.background = 'var(--error)';
-    setTimeout(() => {
-      btn.textContent = original;
-      btn.style.background = '';
-      btn.disabled = false;
-    }, 3000);
-  }
-});
 </script>

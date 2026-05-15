@@ -1,0 +1,139 @@
+# agufagiano.com — LLMs Context File
+
+Portfolio personal de Agustín Fagiano, diseñador gráfico y web con base en Vigo, España.
+Generado siguiendo las recomendaciones de https://docs.astro.build/en/guides/build-with-ai/
+
+---
+
+## Proyecto
+
+- **Tipo:** Portfolio personal one-page (single page application estática)
+- **Stack:** Astro 6.0 + TypeScript — sin frameworks de UI (no React, no Vue)
+- **CSS:** Custom CSS vanilla con design tokens en `:root` — sin Tailwind
+- **Fuentes:** Space Mono + Syne (Google Fonts)
+- **Deployment:** Netlify (SSG — output estático por defecto)
+- **Repo:** https://github.com/agufagiano/agufagiano.com
+
+---
+
+## Estructura de archivos
+
+```
+src/
+  layouts/
+    base.astro        ← Layout global: todos los CSS tokens, nav, loader, cursor, footer
+  pages/
+    index.astro       ← Toda la página: Hero, Proyectos, Skills, Experiencia, Educación, Contacto
+  components/
+    card.astro        ← Componente de card (uso futuro)
+public/
+  favicon.svg
+  favicon.ico
+llms.txt              ← Este archivo
+```
+
+---
+
+## Design Tokens (src/layouts/base.astro — :root)
+
+### Colores
+```css
+--bg:          #f4f1ec   /* Fondo principal — arena cálida */
+--bg2:         #eceae4   /* Fondo alternado entre secciones */
+--surface:     #ffffff
+--surface2:    #f9f7f3
+--border:      #d6d1c8
+--border-dark: #b8b2a7
+--text:        #1a1814   /* Negro editorial */
+--text-muted:  #635e58
+--accent2:     #c9622a   /* Naranja — único color de acento */
+--success:     #2d6a2d
+--error:       #8b2e2e
+--white:       #ffffff
+```
+
+### Tipografía
+```css
+--mono: 'Space Mono', monospace   /* Body, labels, botones, inputs */
+--sans: 'Syne', sans-serif        /* Headings, títulos, display */
+
+/* Escala tipográfica — SIEMPRE usar estos tokens, nunca valores rem sueltos */
+--text-2xs: 0.625rem   /* 12.5px — labels tiny, tags, metadata */
+--text-xs:  0.75rem    /* 15px  — nav, botones, subtítulos */
+--text-sm:  1.25rem    /* 25px  — body principal, inputs, descripciones */
+--text-md:  1rem       /* 20px  — elementos medios */
+--text-lg:  1.2rem     /* 24px  — nav-logo, timeline, footer-logo */
+--text-xl:  2rem       /* 40px  — stat-num */
+
+/* Display/headings usan clamp() — no modificar sin revisar responsive */
+/* Ejemplos: clamp(3.5rem, 9vw, 8rem) para el nombre hero */
+```
+
+---
+
+## Convenciones de código
+
+### Lo que SE DEBE hacer
+- Usar siempre `var(--token)` para colores y font-sizes — nunca hardcodear
+- Scripts en `<script>` de Astro: se compilan como ES modules — usar `addEventListener`, nunca `onsubmit="fn()"` como atributo inline
+- Props de componentes tipados con interfaces TypeScript
+- Usar `is:global` en `<style>` solo cuando el selector necesita atravesar el scope del componente
+- Para nuevas integraciones usar `astro add <nombre>` desde la terminal
+- Comentarios en español, nombres de clases y variables en inglés
+
+### Lo que NO SE DEBE hacer
+- ❌ Hardcodear colores (`#c9622a`) — usar `var(--accent2)`
+- ❌ Hardcodear font-sizes (`0.8rem`) — usar `var(--text-sm)`
+- ❌ Duplicar animaciones de scroll reveal — el IntersectionObserver ya está configurado globalmente en `base.astro`; solo agregar la clase `reveal` o `slide-up` al elemento
+- ❌ Tocar el `z-index` del hero sin revisar la capa del canvas de partículas (`#hero-canvas` está en z-index 0, los hijos del hero en z-index 1)
+- ❌ Agregar fuentes nuevas sin revisar la carga en `base.astro` (Google Fonts link)
+- ❌ Editar `package.json` manualmente — usar `npm install` o `astro add`
+- ❌ Usar `output: 'server'` en `astro.config.mjs` — el sitio es estático (SSG)
+
+---
+
+## Animaciones existentes (no duplicar)
+
+| Clase CSS | Efecto | Trigger |
+|-----------|--------|---------|
+| `.reveal` | clip-path de derecha a izquierda | IntersectionObserver (threshold 0.1) |
+| `.slide-up` | opacity 0→1 + translateY 32px→0 | IntersectionObserver (threshold 0.1) |
+| `.skill-bar-fill[data-width]` | ancho 0→N% | IntersectionObserver en #skills |
+
+El loader, cursor custom y nav shimmer están en `base.astro` y no necesitan configuración adicional.
+
+---
+
+## Secciones de la página (index.astro)
+
+1. **Hero** — nombre, disponibilidad, bio, stats, botones CTA
+2. **Marquee** — franja animada con skills keywords
+3. **Proyectos** — lista de 8 proyectos con preview flotante al hover (array `proyectos`)
+4. **Skills** — barras de progreso en dos columnas
+5. **Experiencia** — timeline de 3 posiciones
+6. **Educación** — grid de 3 cards
+7. **Contacto** — headline + 5 contact cards (Email, Teléfono, LinkedIn, Behance, GitHub)
+
+---
+
+## Buenas prácticas de Astro (fuente: docs.astro.build/en/guides/build-with-ai)
+
+- Verificar APIs actuales antes de usarlas — content collections, sessions y actions han cambiado significativamente en versiones recientes
+- Para scaffolding inicial usar `npm create astro@latest` con un template, no desde cero
+- Usar `astro add tailwind`, `astro add react`, etc. para integraciones oficiales
+- Consultar el MCP server oficial de Astro para documentación actualizada:
+  `https://mcp.docs.astro.build/mcp`
+- Los `<script>` en Astro se bundlean y deduplicarán — no agregar el mismo script en múltiples componentes
+- `<style>` en Astro es scoped por defecto — los selectores solo aplican al componente actual
+- Para estilos globales usar `<style is:global>` o el layout principal
+- Evitar patrones deprecados: la API de content collections v1 fue reemplazada por v2 en Astro 5+
+
+---
+
+## Deployment
+
+- **Plataforma:** Netlify
+- **Build command:** `npm run build`
+- **Publish directory:** `dist`
+- **Branch:** `main` — cada push redeploya automáticamente
+- **Formularios:** Netlify Forms requiere `data-netlify="true"` en el `<form>` y detección en build-time
