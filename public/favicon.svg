@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" fill="#1a1814"/>
   <text
-    x="5"
-    y="50"
-    font-family="Georgia, serif"
-    font-size="42"
-    font-weight="700"
-    letter-spacing="-2"
+    x="4"
+    y="49"
+    font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+    font-size="44"
+    font-weight="800"
+    letter-spacing="-3"
     fill="#f4f1ec"
   >AF</text>
-  <circle cx="57" cy="50" r="4" fill="#c9622a"/>
+  <circle cx="56" cy="45" r="5" fill="#c9622a"/>
 </svg>

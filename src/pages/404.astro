@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/base.astro';
+---
+
+<Base titulo="404 — Página no encontrada · Agustín Fagiano">
+  <section id="not-found">
+    <span class="nf-code" aria-hidden="true">404</span>
+    <h1 class="nf-title">Página no encontrada</h1>
+    <p class="nf-sub">La página que buscas no existe o fue movida.</p>
+    <a href="/" class="btn-primary">← Volver al inicio</a>
+  </section>
+</Base>
+
+<style>
+#not-found {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.2rem;
+  padding: 6rem 1.5rem;
+}
+.nf-code {
+  font-family: var(--sans);
+  font-size: clamp(6rem, 18vw, 14rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--accent2);
+}
+.nf-title {
+  font-family: var(--sans);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.nf-sub {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+</style>

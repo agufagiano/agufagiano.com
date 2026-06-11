@@ -7,6 +7,23 @@ const {
   titulo = "Agustín Fagiano — Diseñador Gráfico & Web",
   descripcion = "Portfolio de Agustín Fagiano, diseñador gráfico y web con base en Vigo. Branding, UI/UX, desarrollo web.",
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og.jpg', Astro.site);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Agustín Fagiano",
+  url: Astro.site?.toString(),
+  jobTitle: "Diseñador Gráfico & Web · UX/UI",
+  address: { "@type": "PostalAddress", addressLocality: "Vigo", addressCountry: "ES" },
+  sameAs: [
+    "https://www.linkedin.com/in/agustin-fagiano",
+    "https://www.behance.net/agufagiano",
+    "https://github.com/agufagiano",
+  ],
+};
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -15,10 +32,33 @@ const {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{titulo}</title>
   <meta name="description" content={descripcion} />
+  <link rel="canonical" href={canonical} />
+  <meta name="theme-color" content="#f4f1ec" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:title" content={titulo} />
+  <meta property="og:description" content={descripcion} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="es_ES" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={titulo} />
+  <meta name="twitter:description" content={descripcion} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Stack+Sans+Notch:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
 
@@ -45,7 +85,29 @@ const {
     <li><a href="#contact">Contacto</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Contacto</a>
+  <button id="nav-toggle" class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+    <span></span>
+    <span></span>
+  </button>
 </nav>
+
+<div id="mobile-menu" aria-hidden="true">
+  <ul class="mobile-menu-links">
+    <li><a href="#projects"><span class="mm-num">01</span>Proyectos</a></li>
+    <li><a href="#skills"><span class="mm-num">02</span>Skills</a></li>
+    <li><a href="#experience"><span class="mm-num">03</span>Experiencia</a></li>
+    <li><a href="#education"><span class="mm-num">04</span>Educación</a></li>
+    <li><a href="#contact"><span class="mm-num">05</span>Contacto</a></li>
+  </ul>
+  <div class="mobile-menu-footer">
+    <a href="mailto:agufagiano@gmail.com">agufagiano@gmail.com</a>
+    <div class="mobile-menu-social">
+      <a href="https://www.linkedin.com/in/agustin-fagiano" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.behance.net/agufagiano" target="_blank" rel="noopener">Behance</a>
+      <a href="https://github.com/agufagiano" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</div>
 
 <slot />
 
@@ -68,7 +130,7 @@ const {
   --error:       #8b2e2e;
   --white:       #ffffff;
   --mono:        'Space Mono', monospace;
-  --sans:        'Syne', sans-serif;
+  --sans:        'Stack Sans Notch', sans-serif;
   /* Escala tipográfica */
   --text-2xs: 0.625rem;
   --text-xs:  0.75rem;
@@ -135,7 +197,7 @@ a, button { cursor: none; }
 .loader-name {
   font-family: var(--sans);
   font-size: clamp(2rem, 6vw, 5rem);
-  font-weight: 800;
+  font-weight: 700;
   color: var(--bg);
   letter-spacing: -0.02em;
   overflow: hidden;
@@ -204,7 +266,7 @@ nav.visible { transform: translateY(0); }
 .nav-logo {
   font-family: var(--sans);
   font-size: var(--text-lg);
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--white);
 }
@@ -240,6 +302,97 @@ nav.visible { transform: translateY(0); }
   transition: background 0.2s;
 }
 .nav-cta:hover { background: var(--accent2); }
+
+/* ── NAV TOGGLE (hamburguesa) ── */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 0;
+  width: 44px; height: 44px;
+  position: relative;
+  flex-shrink: 0;
+}
+.nav-toggle span {
+  position: absolute;
+  left: 10px;
+  width: 24px; height: 2px;
+  background: var(--white);
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), top 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-toggle span:nth-child(1) { top: 17px; }
+.nav-toggle span:nth-child(2) { top: 25px; }
+body.menu-open .nav-toggle span:nth-child(1) { top: 21px; transform: rotate(45deg); }
+body.menu-open .nav-toggle span:nth-child(2) { top: 21px; transform: rotate(-45deg); }
+
+/* ── MOBILE MENU ── */
+#mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: var(--text);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 7rem 1.5rem 2.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s;
+}
+body.menu-open #mobile-menu { opacity: 1; visibility: visible; }
+body.menu-open { overflow: hidden; }
+.mobile-menu-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.mobile-menu-links a {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  font-family: var(--sans);
+  font-size: clamp(2rem, 8vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--bg);
+  padding: 0.7rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1), color 0.2s;
+}
+.mobile-menu-links a:active { color: var(--accent2); }
+body.menu-open .mobile-menu-links a { opacity: 1; transform: translateY(0); }
+body.menu-open .mobile-menu-links li:nth-child(1) a { transition-delay: 0.08s; }
+body.menu-open .mobile-menu-links li:nth-child(2) a { transition-delay: 0.14s; }
+body.menu-open .mobile-menu-links li:nth-child(3) a { transition-delay: 0.20s; }
+body.menu-open .mobile-menu-links li:nth-child(4) a { transition-delay: 0.26s; }
+body.menu-open .mobile-menu-links li:nth-child(5) a { transition-delay: 0.32s; }
+.mm-num {
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: var(--accent2);
+}
+.mobile-menu-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.mobile-menu-footer > a {
+  font-family: var(--mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.6);
+}
+.mobile-menu-social { display: flex; gap: 1.5rem; }
+.mobile-menu-social a {
+  font-family: var(--mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
 
 /* ── HERO ── */
 #hero {
@@ -281,7 +434,7 @@ nav.visible { transform: translateY(0); }
 @keyframes pulseDot { 0%,100%{transform:scale(1)} 50%{transform:scale(1.4)} }
 .hero-name {
   font-family: var(--sans);
-  font-weight: 800;
+  font-weight: 700;
   font-size: clamp(3.5rem, 9vw, 8rem);
   line-height: 0.92;
   letter-spacing: -0.03em;
@@ -365,7 +518,7 @@ nav.visible { transform: translateY(0); }
 .stat-num {
   font-family: var(--sans);
   font-size: var(--text-xl);
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text);
   line-height: 1;
   letter-spacing: -0.02em;
@@ -384,7 +537,7 @@ nav.visible { transform: translateY(0); }
   right: 2rem;
   font-family: var(--sans);
   font-size: clamp(10rem, 22vw, 20rem);
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.05em;
   line-height: 1;
   color: transparent;
@@ -442,7 +595,7 @@ section { padding: 6rem 3rem; border-bottom: 1px solid var(--border); }
 .section-title {
   font-family: var(--sans);
   font-size: clamp(2rem, 5vw, 3.8rem);
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--text);
   line-height: 1;
@@ -609,7 +762,7 @@ section { padding: 6rem 3rem; border-bottom: 1px solid var(--border); }
 .edu-year {
   font-family: var(--sans);
   font-size: 4rem;
-  font-weight: 800;
+  font-weight: 700;
   color: transparent;
   -webkit-text-stroke: 1px var(--border-dark);
   line-height: 1;
@@ -655,7 +808,7 @@ section { padding: 6rem 3rem; border-bottom: 1px solid var(--border); }
 .contact-headline {
   font-family: var(--sans);
   font-size: clamp(2.5rem, 5vw, 4.5rem);
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--text);
   line-height: 0.95;
@@ -749,7 +902,7 @@ footer { background: var(--text); }
 .footer-logo {
   font-family: var(--sans);
   font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 800;
+  font-weight: 700;
   color: var(--white);
   letter-spacing: -0.03em;
 }
@@ -809,11 +962,19 @@ footer { background: var(--text); }
 }
 
 /* ── RESPONSIVE ── */
+@media (min-width: 901px) {
+  #mobile-menu { display: none; }
+}
 @media (max-width: 900px) {
   nav { padding: 1rem 1.5rem; }
   .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .nav-toggle { display: block; }
   section { padding: 4rem 1.5rem; }
   #hero { padding: 7rem 1.5rem 3rem; grid-template-columns: 1fr; gap: 3rem; }
+  /* Evita que el contenido intrínseco (hero-stats) ensanche la columna del grid */
+  .hero-left, .hero-right { min-width: 0; }
+  .hero-name { font-size: clamp(2.6rem, 12vw, 3.5rem); }
   .hero-right { transform: none; }
   .proyecto-item { grid-template-columns: 2.5rem 1fr auto; gap: 0.8rem; }
   .p-cat, .p-año { display: none; }
@@ -821,6 +982,8 @@ footer { background: var(--text); }
   .skills-layout { grid-template-columns: 1fr; gap: 2.5rem; }
   .contact-top { grid-template-columns: 1fr; gap: 1.5rem; }
   .contact-cards { grid-template-columns: 1fr 1fr; }
+  /* 5 tarjetas en 2 columnas: la última ocupa la fila completa para no dejar celda vacía */
+  .contact-card:last-child { grid-column: 1 / -1; }
   .footer-main { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.5rem 2rem; }
   .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; padding: 1.2rem 1.5rem; }
   .education-grid { grid-template-columns: 1fr; }
@@ -831,15 +994,44 @@ footer { background: var(--text); }
   #cursor, #cursor-ring { display: none; }
   .form-submit { cursor: pointer; }
 }
+
+/* Dispositivos táctiles (tablets grandes incluidas): cursor nativo */
+@media (pointer: coarse) {
+  body, a, button { cursor: auto; }
+  #cursor, #cursor-ring { display: none; }
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+  body, a, button { cursor: auto; }
+  #cursor, #cursor-ring { display: none; }
+  #loader { display: none; }
+  nav { transform: none; }
+  .reveal { clip-path: none; }
+  .slide-up { opacity: 1; transform: none; }
+  .hero-tag-inner, .hero-name-line, .hero-title, .hero-actions, .hero-right {
+    opacity: 1; transform: none;
+  }
+  .hero-logo-mark { opacity: 1; transform: none; animation: none; }
+  .marquee-inner { animation: none; flex-wrap: wrap; }
+  #hero-canvas { display: none; }
+}
 </style>
 
 <script>
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+
 /* ── CURSOR ── */
 const cursor = document.getElementById('cursor') as HTMLElement;
 const ring   = document.getElementById('cursor-ring') as HTMLElement;
 let mx = 0, my = 0, rx = 0, ry = 0;
-
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
 
 function animateCursor() {
   cursor.style.left = mx + 'px';
@@ -850,11 +1042,38 @@ function animateCursor() {
   ring.style.top  = ry + 'px';
   requestAnimationFrame(animateCursor);
 }
-animateCursor();
 
-document.querySelectorAll('a, button, .proyecto-item, .edu-card').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+if (!reducedMotion && !coarsePointer) {
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  animateCursor();
+
+  document.querySelectorAll('a, button, .proyecto-item, .edu-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+}
+
+/* ── MOBILE MENU ── */
+const navToggle  = document.getElementById('nav-toggle') as HTMLButtonElement;
+const mobileMenu = document.getElementById('mobile-menu') as HTMLElement;
+
+function setMenu(open: boolean) {
+  document.body.classList.toggle('menu-open', open);
+  navToggle.setAttribute('aria-expanded', String(open));
+  navToggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  mobileMenu.setAttribute('aria-hidden', String(!open));
+}
+
+navToggle.addEventListener('click', () => {
+  setMenu(!document.body.classList.contains('menu-open'));
+});
+
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => setMenu(false));
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.body.classList.contains('menu-open')) setMenu(false);
 });
 
 /* ── LOADER ── */
@@ -863,31 +1082,34 @@ const loaderBar = document.getElementById('loader-bar-fill') as HTMLElement;
 const pct       = document.getElementById('loader-pct') as HTMLElement;
 let count = 0;
 
+function revealHero() {
+  document.getElementById('main-nav')?.classList.add('visible');
+  ['hero-tag', 'hn1', 'hn2', 'hero-title', 'hero-actions', 'hero-right']
+    .forEach(id => document.getElementById(id)?.classList.add('in'));
+}
+
 function setProgress(val: number) {
   count = Math.min(val, 100);
   pct.textContent = count + '%';
   loaderBar.style.width = count + '%';
 }
 
-const fakeInterval = setInterval(() => {
-  setProgress(count + Math.floor(Math.random() * 10) + 4);
-  if (count >= 90) clearInterval(fakeInterval);
-}, 100);
+if (reducedMotion) {
+  loader.classList.add('done');
+  revealHero();
+} else {
+  const fakeInterval = setInterval(() => {
+    setProgress(count + Math.floor(Math.random() * 10) + 4);
+    if (count >= 90) clearInterval(fakeInterval);
+  }, 100);
 
-window.addEventListener('load', () => {
-  clearInterval(fakeInterval);
-  setProgress(100);
-  setTimeout(() => {
-    loader.classList.add('done');
-    document.getElementById('main-nav')?.classList.add('visible');
+  window.addEventListener('load', () => {
+    clearInterval(fakeInterval);
+    setProgress(100);
     setTimeout(() => {
-      document.getElementById('hero-tag')?.classList.add('in');
-      document.getElementById('hn1')?.classList.add('in');
-      document.getElementById('hn2')?.classList.add('in');
-      document.getElementById('hero-title')?.classList.add('in');
-      document.getElementById('hero-actions')?.classList.add('in');
-      document.getElementById('hero-right')?.classList.add('in');
-    }, 200);
-  }, 400);
-});
+      loader.classList.add('done');
+      setTimeout(revealHero, 200);
+    }, 400);
+  });
+}
 </script>

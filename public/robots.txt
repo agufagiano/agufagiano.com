@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://agufagiano.com/sitemap-index.xml
