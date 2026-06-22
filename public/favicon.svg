@@ -7,7 +7,7 @@
     font-size="44"
     font-weight="800"
     letter-spacing="-3"
-    fill="#f4f1ec"
+    fill="#fcfcfc"
   >AF</text>
-  <circle cx="56" cy="45" r="5" fill="#c9622a"/>
+  <circle cx="56" cy="45" r="5" fill="#ff5a00"/>
 </svg>

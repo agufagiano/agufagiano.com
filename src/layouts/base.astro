@@ -33,7 +33,7 @@ const schema = {
   <title>{titulo}</title>
   <meta name="description" content={descripcion} />
   <link rel="canonical" href={canonical} />
-  <meta name="theme-color" content="#f4f1ec" />
+  <meta name="theme-color" content="#fcfcfc" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" href="/favicon.ico" sizes="48x48" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -117,15 +117,15 @@ const schema = {
 <style is:global>
 /* ── TOKENS ── */
 :root {
-  --bg:          #f4f1ec;
-  --bg2:         #eceae4;
+  --bg:          #fcfcfc;
+  --bg2:         #f0f0f0;
   --surface:     #ffffff;
   --surface2:    #f9f7f3;
   --border:      #d6d1c8;
   --border-dark: #b8b2a7;
   --text:        #1a1814;
   --text-muted:  #635e58;
-  --accent2:     #c9622a;
+  --accent2:     #ff5a00;
   --success:     #2d6a2d;
   --error:       #8b2e2e;
   --white:       #ffffff;
@@ -210,7 +210,7 @@ a, button { cursor: none; }
 .loader-name span:nth-child(2) { animation-delay: 0.1s; color: var(--accent2); }
 .loader-bar {
   width: 200px; height: 1px;
-  background: rgba(244,241,236,0.15);
+  background: rgba(252,252,252,0.15);
   position: relative;
   overflow: hidden;
 }
@@ -226,7 +226,7 @@ a, button { cursor: none; }
   font-family: var(--mono);
   font-size: var(--text-xs);
   letter-spacing: 0.15em;
-  color: rgba(244,241,236,0.35);
+  color: rgba(252,252,252,0.35);
 }
 @keyframes loaderSlide { to { transform: translateY(0); } }
 #loader.done {
