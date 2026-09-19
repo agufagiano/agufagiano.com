@@ -46,7 +46,7 @@ llms.txt              ← Este archivo
 --border-dark: #b8b2a7
 --text:        #1a1814   /* Negro editorial */
 --text-muted:  #635e58
---accent2:     #c9622a   /* Naranja — único color de acento */
+--accent2:     #003aff   /* Azul — único color de acento */
 --success:     #2d6a2d
 --error:       #8b2e2e
 --white:       #ffffff
@@ -82,7 +82,7 @@ llms.txt              ← Este archivo
 - Comentarios en español, nombres de clases y variables en inglés
 
 ### Lo que NO SE DEBE hacer
-- ❌ Hardcodear colores (`#c9622a`) — usar `var(--accent2)`
+- ❌ Hardcodear colores (`#003aff`) — usar `var(--accent2)`
 - ❌ Hardcodear font-sizes (`0.8rem`) — usar `var(--text-sm)`
 - ❌ Duplicar animaciones de scroll reveal — el IntersectionObserver ya está configurado globalmente en `base.astro`; solo agregar la clase `reveal` o `slide-up` al elemento
 - ❌ Tocar el `z-index` del hero sin revisar la capa del canvas de partículas (`#hero-canvas` está en z-index 0, los hijos del hero en z-index 1)

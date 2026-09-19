@@ -1,0 +1,3 @@
+# El case study viejo pasó a ser /proyecto/crespo/ (content collection).
+# 301 real de Netlify en vez del meta-refresh que genera Astro en modo estático.
+/proyectos/dr-matias-crespo    /proyecto/crespo/    301

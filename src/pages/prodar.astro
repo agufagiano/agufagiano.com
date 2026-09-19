@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRODAR · Productora de eventos, experiencias y espacios de encuentro</title>
+  <meta name="description" content="PRODAR — Producciones Argentinas. Diseñamos y desarrollamos eventos que conectan sectores productivos, empresas, instituciones y comunidades." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+       ============================================================ */
+    :root {
+      /* Core */
+      --navy: #182743;
+      --navy-dark: #0e1c30;
+      --teal: #06a099;
+      --teal-600: #058c86;
+
+      /* Section backgrounds */
+      --white: #ffffff;
+      --gray: #eef1f4;
+
+      /* Accents */
+      --orange: #f29104;
+      --orange-600: #d97f02;
+      --rose: #f4e2db;
+
+      /* Text */
+      --ink: #182743;
+      --ink-muted: #5b6878;
+      --on-dark: #ffffff;
+
+      /* Radii */
+      --r-btn: 8px;
+      --r-card: 12px;
+      --r-pill: 20px;
+
+      /* Layout */
+      --frame: 1440px;
+      --pad-x: 40px;
+      --pad-y: 80px;
+
+      /* Type */
+      --sans: "Bricolage Grotesque", system-ui, sans-serif;
+      --body: "Inter", system-ui, sans-serif;
+    }
+
+    /* ============================================================
+       RESET / BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--body);
+      color: var(--ink);
+      background: var(--white);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4 { font-family: var(--sans); margin: 0; line-height: 1.08; letter-spacing: -0.02em; }
+    p { margin: 0; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; cursor: pointer; }
+
+    .frame { max-width: var(--frame); margin: 0 auto; padding-left: var(--pad-x); padding-right: var(--pad-x); }
+    section { padding-top: var(--pad-y); padding-bottom: var(--pad-y); }
+
+    .eyebrow {
+      font-family: var(--body);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--teal);
+      margin: 0;
+    }
+    .h2 { font-size: 36px; font-weight: 800; }
+    .h3 { font-size: 28px; font-weight: 700; }
+    .teal-text { color: var(--teal); }
+    .lead { font-size: 16px; color: var(--ink-muted); max-width: 56ch; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--body); font-weight: 600; font-size: 15px;
+      padding: 13px 22px; border-radius: var(--r-btn);
+      border: 1.5px solid transparent; transition: all .2s ease; white-space: nowrap;
+    }
+    .btn-orange { background: var(--orange); color: #fff; }
+    .btn-orange:hover { background: var(--orange-600); transform: translateY(-2px); }
+    .btn-teal { background: var(--teal); color: #fff; }
+    .btn-teal:hover { background: var(--teal-600); transform: translateY(-2px); }
+    .btn-outline-white { background: transparent; color: #fff; border-color: rgba(255,255,255,.45); }
+    .btn-outline-white:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+    .btn-rose { background: var(--rose); color: var(--navy); }
+    .btn-rose:hover { background: #efd5cb; transform: translateY(-2px); }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 16px; border-radius: var(--r-pill);
+      font-size: 13px; font-weight: 500;
+      align-self: flex-start; width: fit-content;
+    }
+
+    /* ============================================================
+       NAV
+       ============================================================ */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--navy);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 74px; }
+    .nav-links { display: flex; gap: 34px; }
+    .nav-links a {
+      color: rgba(255,255,255,.78); font-size: 15px; font-weight: 500;
+      position: relative; transition: color .2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a::after {
+      content: ""; position: absolute; left: 0; bottom: -6px; height: 2px; width: 0;
+      background: var(--teal); transition: width .25s ease;
+    }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* Logo */
+    .logo { display: flex; flex-direction: column; line-height: 1; }
+    .logo-mark { font-family: var(--sans); font-weight: 800; font-size: 26px; color: #fff; letter-spacing: -0.03em; display: inline-flex; align-items: center; }
+    .logo-pill {
+      background: var(--teal); color: #fff; border-radius: 9px;
+      padding: 1px 9px 3px; margin-left: 3px; display: inline-block;
+    }
+    .logo-sub { font-family: var(--body); font-weight: 400; font-size: 10.5px; letter-spacing: 1.2px; color: rgba(255,255,255,.55); text-transform: uppercase; margin-top: 5px; }
+
+    .nav-cta { display: flex; align-items: center; gap: 14px; }
+    .nav-toggle { display: none; background: none; border: 0; color: #fff; }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero { position: relative; min-height: 92vh; display: flex; align-items: center; overflow: hidden; padding: 0; color: #fff; --par: 0px; }
+    .hero-bg-wrap { position: absolute; inset: 0; z-index: 0; overflow: hidden; --par: 0px; transform: translateY(var(--par)); }
+    .hero-bg {
+      position: absolute; inset: -4%; z-index: 0;
+      background-image: url("https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1920&q=80");
+      background-size: cover; background-position: center;
+      animation: kenburns 26s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes kenburns {
+      from { transform: scale(1.04) translate(0, 0); }
+      to   { transform: scale(1.16) translate(-1.5%, -1.5%); }
+    }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(105deg, rgba(24,39,67,.94) 0%, rgba(24,39,67,.82) 45%, rgba(24,39,67,.62) 100%);
+    }
+    .hero-overlay::after {
+      content:""; position:absolute; inset:0;
+      background: linear-gradient(to top, rgba(14,28,48,.85) 0%, rgba(24,39,67,0) 40%);
+    }
+    .hero .frame { position: relative; z-index: 2; width: 100%; padding-top: 90px; padding-bottom: 60px; }
+    .hero-content { max-width: 720px; }
+    .hero-pill {
+      background: rgba(6,160,153,.16); color: #5ee0d8; border: 1px solid rgba(6,160,153,.5);
+      backdrop-filter: blur(4px);
+    }
+    .hero h1 { font-size: 56px; font-weight: 800; margin: 22px 0 18px; }
+    .hero-sub { font-size: 16px; color: rgba(255,255,255,.82); max-width: 56ch; line-height: 1.7; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
+
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+      margin-top: 56px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,.15);
+      max-width: 880px;
+    }
+    .stat-val { font-family: var(--sans); font-weight: 800; font-size: 32px; color: var(--teal); line-height: 1; }
+    .stat-val .teal-text { color: #2fcabf; }
+    .stat-label { font-size: 13px; color: rgba(255,255,255,.7); margin-top: 7px; }
+
+    /* ============================================================
+       TICKER
+       ============================================================ */
+    .ticker { background: var(--navy); padding: 0; overflow: hidden; border-top: 1px solid rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.06); }
+    .ticker-track { display: flex; width: max-content; animation: scroll-x 28s linear infinite; }
+    .ticker-track span {
+      font-family: var(--sans); font-weight: 700; font-size: 32px; color: #fff;
+      padding: 26px 0; white-space: nowrap;
+    }
+    .ticker-track .dot { color: var(--teal); padding: 0 28px; }
+    @keyframes scroll-x { to { transform: translateX(-50%); } }
+    .ticker:hover .ticker-track { animation-play-state: paused; }
+
+    /* ============================================================
+       QUIÉNES SOMOS
+       ============================================================ */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .qs-card {
+      background: var(--navy); color: #fff; border-radius: var(--r-card);
+      padding: 48px 42px; position: relative; overflow: hidden;
+    }
+    .qs-card::after {
+      content:""; position:absolute; right:-40px; bottom:-40px; width:160px; height:160px;
+      border-radius:50%; background: radial-gradient(circle, rgba(6,160,153,.35), transparent 70%);
+    }
+    .badge-teal { background: rgba(6,160,153,.2); color: #5ee0d8; border: 1px solid rgba(6,160,153,.45); }
+    .qs-card h3 { font-size: 30px; font-weight: 800; margin: 20px 0 16px; }
+    .qs-card p { color: rgba(255,255,255,.74); }
+    .qs-right h2 { font-size: 36px; font-weight: 800; margin: 14px 0 18px; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .pill-outline { border: 1.5px solid rgba(6,160,153,.6); color: var(--teal); background: transparent; font-weight: 600; transition: all .2s; }
+    .pill-outline:hover { background: var(--teal); color: #fff; }
+
+    /* ============================================================
+       QUÉ HACEMOS (services)
+       ============================================================ */
+    .bg-gray { background: var(--gray); }
+    .bg-navy-dark { background: var(--navy-dark); color: #fff; }
+    .sec-head { max-width: 640px; margin-bottom: 48px; }
+    .sec-head h2 { font-size: 36px; font-weight: 800; margin: 12px 0 14px; }
+    .sec-head p { color: var(--ink-muted); }
+
+    .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .svc-grid .svc:nth-child(4), .svc-grid .svc:nth-child(5) { grid-column: span 1; }
+    .svc {
+      background: #fff; border: 1.5px solid #e3e8ee; border-radius: var(--r-card);
+      padding: 30px 28px; transition: all .22s ease;
+    }
+    .svc:hover { border-color: var(--teal); transform: translateY(-4px); box-shadow: 0 18px 40px rgba(24,39,67,.08); }
+    .icon-sq {
+      width: 50px; height: 50px; border-radius: 11px; background: rgba(6,160,153,.12);
+      color: var(--teal); display: grid; place-items: center; margin-bottom: 20px;
+    }
+    .svc h3 { font-size: 20px; font-weight: 700; margin-bottom: 9px; }
+    .svc p { color: var(--ink-muted); font-size: 15px; }
+
+    /* ============================================================
+       PROYECTO DESTACADO
+       ============================================================ */
+    .proj { display: grid; grid-template-columns: 1fr 1.1fr; border-radius: var(--r-card); overflow: hidden; box-shadow: 0 24px 60px rgba(24,39,67,.10); }
+    .proj-left {
+      background: #143b34; color: #fff; padding: 56px 46px;
+      display: flex; flex-direction: column; justify-content: center;
+      background-image: radial-gradient(circle at 80% 10%, rgba(6,160,153,.35), transparent 55%);
+    }
+    .badge-orange { background: var(--orange); color: #fff; font-weight: 600; }
+    .proj-left h3 { font-size: 34px; font-weight: 800; margin-top: 22px; }
+    .proj-right { background: #fff; padding: 50px 46px; }
+    .proj-right > p { color: var(--ink-muted); margin-bottom: 26px; }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 30px; }
+    .stat-box { background: var(--gray); border-radius: 10px; padding: 20px 22px; }
+    .stat-box .v { font-family: var(--sans); font-weight: 800; font-size: 26px; color: var(--navy); }
+    .stat-box .l { font-size: 13px; color: var(--ink-muted); margin-top: 4px; }
+
+    /* ============================================================
+       VISIÓN
+       ============================================================ */
+    .vision { text-align: center; }
+    .vision .inner { max-width: 880px; margin: 0 auto; }
+    .vision blockquote {
+      font-family: var(--sans); font-weight: 700; font-size: 46px; line-height: 1.12;
+      margin: 22px 0 24px; letter-spacing: -0.02em; color: #fff;
+    }
+    .vision p { color: rgba(255,255,255,.62); font-size: 18px; max-width: 60ch; margin: 0 auto; }
+
+    /* ============================================================
+       SECTORES
+       ============================================================ */
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1.5px solid rgba(24,39,67,.22); color: var(--navy); background: transparent;
+      padding: 13px 22px; border-radius: var(--r-pill); font-weight: 600; font-size: 15px;
+      transition: all .2s ease;
+    }
+    .tag svg { color: var(--teal); transition: color .2s; }
+    .tag:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .tag:hover svg { color: #fff; }
+
+    /* ============================================================
+       CLIENTES / SPONSORS
+       ============================================================ */
+    .tier { margin-bottom: 44px; }
+    .tier:last-child { margin-bottom: 0; }
+    .tier-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-muted); margin-bottom: 18px; }
+    .logo-row { display: grid; gap: 18px; }
+    .tier-lg .logo-row { grid-template-columns: repeat(4, 1fr); }
+    .tier-md .logo-row { grid-template-columns: repeat(6, 1fr); }
+    .tier-sm .logo-row { grid-template-columns: repeat(8, 1fr); }
+    .logo-box {
+      border: 1.5px solid #e3e8ee; border-radius: 10px; background: #fff;
+      display: grid; place-items: center; color: #aeb8c4; font-weight: 600; font-size: 13px;
+      transition: all .2s;
+    }
+    .tier-lg .logo-box { height: 92px; }
+    .tier-md .logo-box { height: 70px; font-size: 12px; }
+    .tier-sm .logo-box { height: 54px; font-size: 11px; }
+    .logo-box:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ============================================================
+       FAQ
+       ============================================================ */
+    .faq-list { max-width: 860px; margin: 44px auto 0; }
+    .faq-item { border-top: 1.5px solid #dde3ea; }
+    .faq-item:last-child { border-bottom: 1.5px solid #dde3ea; }
+    .faq-q {
+      width: 100%; background: none; border: 0; text-align: left;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      padding: 26px 4px; font-family: var(--sans); font-weight: 700; font-size: 20px; color: var(--navy);
+    }
+    .faq-icon { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: var(--teal); transition: transform .25s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+    .faq-a-inner { padding: 0 4px 26px; color: var(--ink-muted); max-width: 70ch; }
+
+    /* ============================================================
+       CONTACTO
+       ============================================================ */
+    .contact { background: var(--navy); color: #fff; }
+    .contact-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 60px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { font-size: 13px; font-weight: 500; color: rgba(255,255,255,.7); }
+    .field input, .field textarea {
+      background: rgba(255,255,255,.07); border: 1.5px solid rgba(255,255,255,.15);
+      border-radius: var(--r-btn); padding: 13px 15px; color: #fff; font-family: var(--body); font-size: 15px;
+      transition: border-color .2s, background .2s;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,.4); }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--teal); background: rgba(6,160,153,.08); }
+    .field textarea { resize: vertical; min-height: 120px; }
+    .form-actions { grid-column: 1 / -1; display: flex; gap: 14px; flex-wrap: wrap; margin-top: 4px; }
+
+    .contact-right h2 { font-size: 34px; font-weight: 800; margin-bottom: 16px; }
+    .contact-right > p { color: rgba(255,255,255,.7); margin-bottom: 30px; max-width: 42ch; }
+    .contact-link { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .contact-link .ci { width: 42px; height: 42px; border-radius: 10px; background: rgba(6,160,153,.15); color: var(--teal); display: grid; place-items: center; flex: 0 0 auto; }
+    .contact-link .ct small { display: block; color: rgba(255,255,255,.5); font-size: 12px; }
+    .contact-link .ct strong { font-weight: 600; font-size: 15px; }
+    .socials { display: flex; gap: 12px; margin-top: 26px; }
+    .soc { width: 44px; height: 44px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,.18); display: grid; place-items: center; color: #fff; transition: all .2s; }
+    .soc:hover { background: var(--teal); border-color: var(--teal); }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer { background: var(--navy-dark); color: #fff; padding: 36px 0; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .footer .copyright { color: rgba(255,255,255,.5); font-size: 14px; }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 980px) {
+      :root { --pad-x: 22px; --pad-y: 56px; }
+      .nav-links, .nav-cta .btn { display: none; }
+      .nav-toggle { display: grid; place-items: center; }
+      .nav-cta { gap: 0; }
+      .hero h1 { font-size: 38px; }
+      .hero-stats { grid-template-columns: 1fr 1fr; gap: 22px; }
+      .two-col, .contact-grid, .proj { grid-template-columns: 1fr; }
+      .proj { gap: 0; }
+      .svc-grid { grid-template-columns: 1fr 1fr; }
+      .tier-md .logo-row { grid-template-columns: repeat(3, 1fr); }
+      .tier-sm .logo-row { grid-template-columns: repeat(4, 1fr); }
+      .vision blockquote { font-size: 32px; }
+      .h2, .sec-head h2, .qs-right h2, .contact-right h2 { font-size: 28px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 560px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .tier-lg .logo-row { grid-template-columns: repeat(2, 1fr); }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-bg { animation: none; transform: scale(1.06); }
+      .ticker-track { animation: none; }
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================ NAV ============================ -->
+  <header class="nav">
+    <div class="frame nav-inner">
+      <a href="#top" class="logo" aria-label="PRODAR — Producciones Argentinas">
+        <span class="logo-mark">PROD<span class="logo-pill">AR</span></span>
+        <span class="logo-sub">Producciones Argentinas</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#quienes">Quiénes somos</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="#contacto" class="btn btn-orange">Hablemos</a>
+        <button class="nav-toggle" aria-label="Menú" onclick="document.querySelector('.nav-links').scrollIntoView()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================ HERO ============================ -->
+  <section class="hero" id="top">
+    <div class="hero-bg-wrap" aria-hidden="true"><div class="hero-bg"></div></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="frame">
+      <div class="hero-content">
+        <span class="pill hero-pill">Productora de eventos · Argentina</span>
+        <h1>Eventos que <span class="teal-text">conectan</span> y generan valor.</h1>
+        <p class="hero-sub">Diseñamos y desarrollamos eventos que conectan sectores productivos, empresas, instituciones y comunidades.</p>
+        <div class="hero-actions">
+          <a href="#contacto" class="btn btn-orange">Hablemos de tu próximo evento</a>
+          <a href="#proyectos" class="btn btn-outline-white">Ver proyectos</a>
+        </div>
+        <div class="hero-stats">
+          <div><div class="stat-val"><span class="teal-text">+3.000</span></div><div class="stat-label">Asistentes</div></div>
+          <div><div class="stat-val"><span class="teal-text">+45</span></div><div class="stat-label">Expositores</div></div>
+          <div><div class="stat-val"><span class="teal-text">+13k</span></div><div class="stat-label">Cabezas rematadas</div></div>
+          <div><div class="stat-val"><span class="teal-text">Nac.&nbsp;&&nbsp;Int.</span></div><div class="stat-label">Alcance</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ TICKER ============================ -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Eventos<i class="dot">·</i>Conexiones<i class="dot">·</i>Impacto<i class="dot">·</i>Experiencias<i class="dot">·</i>Comunidad<i class="dot">·</i>Innovación<i class="dot">·</i>Encuentros<i class="dot">·</i>Sectores<i class="dot">·</i></span>
+      <span>Eventos<i class="dot">·</i>Conexiones<i class="dot">·</i>Impacto<i class="dot">·</i>Experiencias<i class="dot">·</i>Comunidad<i class="dot">·</i>Innovación<i class="dot">·</i>Encuentros<i class="dot">·</i>Sectores<i class="dot">·</i></span>
+    </div>
+  </div>
+
+  <!-- ============================ QUIÉNES SOMOS ============================ -->
+  <section id="quienes">
+    <div class="frame two-col">
+      <div class="qs-card">
+        <span class="pill badge-teal">Con propósito</span>
+        <h3>Creamos eventos con propósito</h3>
+        <p>Cada encuentro que producimos nace de un objetivo claro: generar valor real para quienes participan. Unimos estrategia, logística y creatividad para que cada evento deje huella.</p>
+      </div>
+      <div class="qs-right">
+        <span class="eyebrow">Quiénes somos</span>
+        <h2>Productora integral de encuentros que importan</h2>
+        <p class="lead">PRODAR es una productora especializada en el diseño, organización y gestión integral de eventos, congresos, exposiciones y encuentros sectoriales.</p>
+        <div class="pill-row">
+          <span class="pill pill-outline">Congresos</span>
+          <span class="pill pill-outline">Exposiciones</span>
+          <span class="pill pill-outline">Encuentros</span>
+          <span class="pill pill-outline">Eventos sectoriales</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ QUÉ HACEMOS ============================ -->
+  <section id="servicios" class="bg-gray">
+    <div class="frame">
+      <div class="sec-head">
+        <span class="eyebrow">Qué hacemos</span>
+        <h2>Gestión integral, de la idea a la ejecución</h2>
+        <p>Acompañamos cada etapa del proceso con un equipo multidisciplinario y una red de aliados estratégicos.</p>
+      </div>
+      <div class="svc-grid">
+        <article class="svc">
+          <div class="icon-sq"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <h3>Diseño y conceptualización</h3>
+          <p>Propuestas, identidad y estrategia que dan forma y sentido a cada evento.</p>
+        </article>
+        <article class="svc">
+          <div class="icon-sq"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18M3 12h18M3 17h12"/></svg></div>
+          <h3>Producción integral</h3>
+          <p>Planificación, coordinación y ejecución de cada detalle, en tiempo y forma.</p>
+        </article>
+        <article class="svc">
+          <div class="icon-sq"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <h3>Gestión comercial</h3>
+          <p>Sponsors, expositores y alianzas que sostienen y potencian el evento.</p>
+        </article>
+        <article class="svc">
+          <div class="icon-sq"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2Z"/></svg></div>
+          <h3>Comunicación y difusión</h3>
+          <p>Prensa, marketing y posicionamiento para amplificar el alcance.</p>
+        </article>
+        <article class="svc">
+          <div class="icon-sq"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h3>Relaciones institucionales</h3>
+          <p>Vínculos con organismos públicos, cámaras y entidades del sector.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ PROYECTO DESTACADO ============================ -->
+  <section id="proyectos">
+    <div class="frame">
+      <div class="proj">
+        <div class="proj-left">
+          <span class="pill badge-orange">Proyecto destacado</span>
+          <h3>Expo Ganadera del Centro</h3>
+        </div>
+        <div class="proj-right">
+          <p>Uno de los principales encuentros de la cadena ganadera argentina, donde productores, expositores e instituciones se dan cita para hacer negocios y proyectar el sector.</p>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="v">+3.000</div><div class="l">Asistentes</div></div>
+            <div class="stat-box"><div class="v">+13k</div><div class="l">Cabezas rematadas</div></div>
+            <div class="stat-box"><div class="v">+45</div><div class="l">Expositores</div></div>
+            <div class="stat-box"><div class="v">Nac.</div><div class="l">Alcance</div></div>
+          </div>
+          <a href="#contacto" class="btn btn-teal">Ver Expo Ganadera →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ VISIÓN ============================ -->
+  <section class="bg-navy-dark vision">
+    <div class="frame">
+      <div class="inner">
+        <span class="eyebrow">Nuestra visión</span>
+        <blockquote>Creemos en el poder de los <span class="teal-text">encuentros</span>.</blockquote>
+        <p>Impulsamos proyectos que generan conexiones genuinas entre personas, organizaciones y sectores productivos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ SECTORES ============================ -->
+  <section class="bg-gray">
+    <div class="frame">
+      <div class="sec-head">
+        <span class="eyebrow">Sectores</span>
+        <h2>Trabajamos con múltiples industrias</h2>
+        <p>Diseñamos experiencias a medida para cada sector, entendiendo su lenguaje y su comunidad.</p>
+      </div>
+      <div class="tag-cloud">
+        <span class="tag"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 22l1-1h18l1 1M6 18V9l6-5 6 5v9"/></svg>Agroindustria</span>
+        <span class="tag"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>Ganadería</span>
+        <span class="tag"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>Tecnología</span>
+        <span class="tag"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20M4 20V8l5-3 5 3M14 20V11l5-3v12"/></svg>Industria</span>
+        <span class="tag"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5ZM6 12v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg>Educación</span>
+        <span class="tag"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>Negocios</span>
+        <span class="tag"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9Z"/></svg>Cultura y comunidad</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ CLIENTES / SPONSORS ============================ -->
+  <section>
+    <div class="frame">
+      <div class="sec-head">
+        <span class="eyebrow">Clientes</span>
+        <h2>Confían en nosotros</h2>
+        <p>Empresas, instituciones y medios que acompañaron nuestros eventos.</p>
+      </div>
+
+      <div class="tier tier-lg">
+        <div class="tier-label">Empresas</div>
+        <div class="logo-row">
+          <div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div>
+        </div>
+      </div>
+      <div class="tier tier-md">
+        <div class="tier-label">Instituciones</div>
+        <div class="logo-row">
+          <div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div>
+        </div>
+      </div>
+      <div class="tier tier-sm">
+        <div class="tier-label">Medios</div>
+        <div class="logo-row">
+          <div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div><div class="logo-box">Logo</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ FAQ ============================ -->
+  <section class="bg-gray">
+    <div class="frame">
+      <div class="sec-head" style="margin: 0 auto 8px; text-align:center;">
+        <span class="eyebrow">Preguntas frecuentes</span>
+        <h2>Resolvemos tus dudas</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q">¿Qué tipo de eventos produce PRODAR?<span class="faq-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Producimos congresos, exposiciones, encuentros sectoriales, eventos institucionales y experiencias a medida para empresas, organismos y comunidades.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">¿Cómo es el proceso de trabajo?<span class="faq-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Partimos de un diagnóstico y la definición de objetivos. Luego diseñamos el concepto, planificamos la producción, coordinamos proveedores y ejecutamos el evento, midiendo resultados al cierre.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">¿Trabajan con organismos públicos?<span class="faq-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Sí. Tenemos amplia experiencia en relaciones institucionales con organismos públicos, cámaras y entidades del sector productivo.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">¿Cuánto tiempo lleva organizar un evento?<span class="faq-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Depende de la escala y complejidad. Un encuentro mediano suele requerir entre 2 y 4 meses; los grandes congresos o exposiciones pueden necesitar de 6 meses en adelante.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">¿Cómo me contacto para una propuesta?<span class="faq-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Completá el formulario de contacto o escribinos a hola@prodar.com.ar. Coordinamos una reunión para conocer tu proyecto y preparar una propuesta a medida.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ CONTACTO ============================ -->
+  <section id="contacto" class="contact">
+    <div class="frame contact-grid">
+      <form class="form-grid" onsubmit="event.preventDefault(); this.reset(); alert('¡Gracias! Te contactaremos a la brevedad.');">
+        <div class="field"><label>Nombre</label><input type="text" placeholder="Tu nombre" required /></div>
+        <div class="field"><label>Empresa</label><input type="text" placeholder="Tu empresa" /></div>
+        <div class="field"><label>Email</label><input type="email" placeholder="tu@email.com" required /></div>
+        <div class="field"><label>Teléfono</label><input type="tel" placeholder="+54 ..." /></div>
+        <div class="field full"><label>Mensaje</label><textarea placeholder="Contanos sobre tu evento..."></textarea></div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-orange">Enviar mensaje →</button>
+          <a href="#" class="btn btn-rose">Descargar brochure</a>
+        </div>
+      </form>
+
+      <div class="contact-right">
+        <h2>Hablemos de tu próximo evento</h2>
+        <p>Contanos tu idea y diseñamos juntos la mejor forma de hacerla realidad.</p>
+        <a class="contact-link" href="mailto:hola@prodar.com.ar">
+          <span class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></span>
+          <span class="ct"><small>Email</small><strong>hola@prodar.com.ar</strong></span>
+        </a>
+        <a class="contact-link" href="tel:+5400000000">
+          <span class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg></span>
+          <span class="ct"><small>Teléfono</small><strong>+54 (000) 000-0000</strong></span>
+        </a>
+        <a class="contact-link" href="#">
+          <span class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span class="ct"><small>Ubicación</small><strong>Argentina</strong></span>
+        </a>
+        <div class="socials">
+          <a class="soc" href="#" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-1 1.83-2.05 3.75-2.05C20.4 8.65 22 10.5 22 14v7h-4v-6.2c0-1.5-.03-3.4-2.1-3.4-2.1 0-2.4 1.6-2.4 3.3V21H9V9Z"/></svg></a>
+          <a class="soc" href="#" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ FOOTER ============================ -->
+  <footer class="footer">
+    <div class="frame footer-inner">
+      <a href="#top" class="logo">
+        <span class="logo-mark">PROD<span class="logo-pill">AR</span></span>
+      </a>
+      <div class="copyright">© 2025 PRODAR · Producciones Argentinas</div>
+    </div>
+  </footer>
+
+  <script is:inline>
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(function (q) {
+      q.addEventListener('click', function () {
+        var item = q.parentElement;
+        var answer = item.querySelector('.faq-a');
+        var isOpen = item.classList.contains('open');
+        // close all
+        document.querySelectorAll('.faq-item').forEach(function (i) {
+          i.classList.remove('open');
+          i.querySelector('.faq-a').style.maxHeight = null;
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+
+    // Subtle hero parallax — applied to a wrapper so it composes with the
+    // Ken Burns zoom (which lives on .hero-bg) instead of overriding it.
+    var heroBg = document.querySelector('.hero-bg');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (heroBg && !reduce) {
+      window.addEventListener('scroll', function () {
+        var y = window.scrollY;
+        if (y < window.innerHeight) {
+          heroBg.parentElement.style.setProperty('--par', (y * 0.15) + 'px');
+        }
+      }, { passive: true });
+    }
+  </script>
+</body>
+</html>

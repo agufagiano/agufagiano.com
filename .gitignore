@@ -4,3 +4,15 @@ dist/
 .astro/
 .env
 .env.*
+
+# Config local de Obsidian sobre src/content/proyectos
+.obsidian/
+
+# Trabajos que viven en esta carpeta pero no son parte del sitio
+/dosnudos-hero/
+/T-final-streaming/
+/T-final-streaming.zip
+/prodar/
+
+# Config local de Claude Code
+/.claude/

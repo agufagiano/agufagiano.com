@@ -1,0 +1,95 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/base.astro';
+
+export async function getStaticPaths() {
+  const proyectos = (await getCollection('proyectos', ({ data }) => !data.draft))
+    .sort((a, b) => a.data.order - b.data.order);
+
+  return proyectos.map((entry, i) => ({
+    params: { slug: entry.id },
+    // El siguiente proyecto de la lista; el último vuelve al primero.
+    props: { entry, siguiente: proyectos[(i + 1) % proyectos.length] },
+  }));
+}
+
+const { entry, siguiente } = Astro.props;
+const { Content } = await render(entry);
+
+// Las imágenes viven junto al index.md y el frontmatter las nombra con ruta
+// relativa ("./cover.webp"). Se resuelven contra este glob en vez de con el
+// helper image() del schema para que una imagen todavía no exportada desde
+// Obsidian deje la ficha sin portada en lugar de romper el build.
+const imagenes = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/content/proyectos/**/*.{webp,png,jpg,jpeg,avif}',
+  { eager: true },
+);
+const carpeta = '/' + entry.filePath!.replace(/index\.md$/, '');
+const cover = entry.data.cover
+  ? imagenes[carpeta + entry.data.cover.replace(/^\.\//, '')]?.default
+  : undefined;
+
+const { title, line, did, year, role, tools, client, ai } = entry.data;
+
+const ficha = [
+  { label: 'Cliente', value: client ?? title },
+  { label: 'Año', value: year.join(' · ') },
+  { label: 'Rol', value: role },
+  { label: 'Tools', value: tools.join(' · ') },
+].filter((campo) => campo.value);
+---
+
+<Base titulo={`${title} — Agustín Fagiano`} descripcion={line}>
+
+  <!-- CABECERA -->
+  <section class="cs-hero">
+    <a href="/#projects" class="cs-back">← Volver a proyectos</a>
+
+    <h1 class="cs-title reveal">{title}</h1>
+    <p class="cs-subtitle slide-up">{line}</p>
+
+    {(did.length > 0 || ai) && (
+      <ul class="pr-tags slide-up">
+        {did.map((tag) => <li class="pr-tag">{tag}</li>)}
+        {ai && <li class="pr-tag pr-tag-ai">AI-assisted</li>}
+      </ul>
+    )}
+
+    {cover && (
+      <figure class="cs-fig slide-up">
+        <Image src={cover} alt={title} widths={[640, 1024, 1600]} sizes="(max-width: 900px) 100vw, 1100px" />
+      </figure>
+    )}
+  </section>
+
+  <!-- DIAGNOSIS · DECISION · RESULT · GALLERY (tal cual vienen del markdown) -->
+  <section class="pr-body">
+    <Content />
+  </section>
+
+  <!-- FICHA -->
+  <section style="background: var(--surface2);">
+    <div class="cs-meta" style="margin-top: 0; grid-template-columns: repeat(4, 1fr);">
+      {ficha.map((campo) => (
+        <div>
+          <div class="cs-meta-label">{campo.label}</div>
+          <div class="cs-meta-value">{campo.value}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- SIGUIENTE PROYECTO -->
+  {siguiente && siguiente.id !== entry.id && (
+    <section>
+      <a href={`/proyecto/${siguiente.id}/`} class="pr-next">
+        <span class="pr-next-label">Siguiente proyecto</span>
+        <span class="pr-next-title">{siguiente.data.title}</span>
+        <span class="pr-next-arrow" aria-hidden="true">→</span>
+      </a>
+    </section>
+  )}
+
+</Base>
