@@ -43,42 +43,65 @@ const ficha = [
 
 <Base titulo={`${title} — Agustín Fagiano`} descripcion={line}>
 
-  <!-- CABECERA -->
-  <section class="cs-hero">
-    <a href="/#projects" class="cs-back">← Volver a proyectos</a>
-
-    <h1 class="cs-title reveal">{title}</h1>
-    <p class="cs-subtitle slide-up">{line}</p>
-
-    {(did.length > 0 || ai) && (
-      <ul class="pr-tags slide-up">
-        {did.map((tag) => <li class="pr-tag">{tag}</li>)}
-        {ai && <li class="pr-tag pr-tag-ai">AI-assisted</li>}
-      </ul>
-    )}
-
+  <!-- PORTADA A PANTALLA COMPLETA -->
+  <!-- La portada ocupa el viewport entero y el título va encima, sobre un
+       velo oscuro. Sin portada el velo queda solo y el título se lee igual. -->
+  <header class:list={['cn-hero', { 'cn-hero-solo': !cover }]}>
     {cover && (
-      <figure class="cs-fig slide-up">
-        <Image src={cover} alt={title} widths={[640, 1024, 1600]} sizes="(max-width: 900px) 100vw, 1100px" />
-      </figure>
+      <div class="cn-hero-media">
+        <Image
+          src={cover}
+          alt={title}
+          widths={[900, 1440, 1920]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
     )}
+
+    <div class="cn-hero-inner">
+      <a href="/#projects" class="cn-back">← Volver a proyectos</a>
+
+      <!-- Título y scroll comparten la franja inferior. -->
+      <div class="cn-hero-foot">
+        <div class="cn-hero-text">
+          <h1 class="cn-title">{title}</h1>
+          <p class="cn-line">{line}</p>
+
+          {(did.length > 0 || ai) && (
+            <ul class="pr-tags cn-tags">
+              {did.map((tag) => <li class="pr-tag">{tag}</li>)}
+              {ai && <li class="pr-tag pr-tag-ai">AI-assisted</li>}
+            </ul>
+          )}
+        </div>
+
+        <div class="cn-scroll" aria-hidden="true">
+          <span>Scroll</span>
+          <i></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- FICHA -->
+  <!-- Va justo bajo la portada: da el contexto del proyecto antes de entrar
+       en los capítulos, que a partir de aquí son casi todo imagen. -->
+  <section class="cn-ficha">
+    <div class="cn-ficha-grid">
+      {ficha.map((campo) => (
+        <div>
+          <div class="cn-ficha-label">{campo.label}</div>
+          <div class="cn-ficha-value">{campo.value}</div>
+        </div>
+      ))}
+    </div>
   </section>
 
   <!-- DIAGNOSIS · DECISION · RESULT · GALLERY (tal cual vienen del markdown) -->
   <section class="pr-body">
     <Content />
-  </section>
-
-  <!-- FICHA -->
-  <section style="background: var(--surface2);">
-    <div class="cs-meta" style="margin-top: 0; grid-template-columns: repeat(4, 1fr);">
-      {ficha.map((campo) => (
-        <div>
-          <div class="cs-meta-label">{campo.label}</div>
-          <div class="cs-meta-value">{campo.value}</div>
-        </div>
-      ))}
-    </div>
   </section>
 
   <!-- SIGUIENTE PROYECTO -->

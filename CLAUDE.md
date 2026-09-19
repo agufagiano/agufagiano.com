@@ -50,12 +50,30 @@ Los proyectos viven en `src/content/proyectos/`, que también es un vault de Obs
 
 ## Case studies
 - Los case studies ya no son páginas `.astro` a mano: salen de la content collection.
-- Estructura visual: `cs-hero` (volver, título, línea, tags de `did`, portada) + el
-  cuerpo del markdown (Diagnostic / Decision / Result / Gallery) + ficha + siguiente proyecto.
-- Clases `cs-*` y `pr-*` en base.astro. Las `cs-*` son las heredadas del case study
-  hecho a mano y se siguen usando en la cabecera y la ficha.
+- Diseño cinematográfico a sangre: la imagen manda y el texto acompaña.
+  1. `cn-hero`: portada a pantalla completa (`100svh`) con dos velos oscuros encima
+     y, en la franja inferior, título + línea + tags de `did` en blanco.
+  2. `cn-ficha`: tira con cliente / año / rol / tools sobre `--surface2`, justo
+     bajo la portada, para dar contexto antes de entrar en los capítulos.
+  3. `pr-body`: el cuerpo del markdown (Diagnostic / Decision / Result / Gallery).
+  4. `pr-next`: siguiente proyecto.
+- Clases `cn-*` (portada y ficha) y `pr-*` (cuerpo) en base.astro.
+- La sección `.pr-body` **no lleva padding lateral**: así las imágenes llegan al borde
+  de la ventana. El texto se mete hacia dentro con su propio margen de 3rem.
+- Cada capítulo (rótulo + imagen + texto) es un `.pr-chapter` que **agrupa el script
+  en runtime**, porque del markdown sale todo plano. Dentro, el `flex-order` pone la
+  imagen justo bajo el rótulo y deja el texto abajo, como pie. Sin JS se lee en el
+  orden del markdown (rótulo, texto, imagen), que también funciona.
+- Los `h2` del markdown se convierten en rótulos pequeños en mono, numerados con un
+  contador CSS (`01 /`, `02 /`…). El titular grande de la página es el de la portada.
+- La galería (imágenes seguidas sin línea en blanco, que caen en un mismo `<p>`) es un
+  mosaico de dos columnas; si el número de imágenes es impar, la última ocupa la fila.
 - Las imágenes del cuerpo se revelan con `.img-reveal` (clip-path + desescalado), que
   se envuelve en runtime porque salen del markdown. Ver el bloque IMAGE REVEAL.
+- La entrada de la portada la dispara `revealHero()` al terminar el loader, igual que
+  el hero de la home.
+- **Ojo con las imágenes:** a sangre se ven mejor las que llenan el encuadre. Una
+  exportación con márgenes blancos alrededor deja bandas vacías de borde a borde.
 
 ## Estética y diseño
 Estilo editorial cálido, tipo suizo.
