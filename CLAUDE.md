@@ -24,8 +24,9 @@ One-page en español: hero, proyectos (links a Behance), skills, experiencia, ed
 Los proyectos viven en `src/content/proyectos/`, que también es un vault de Obsidian.
 - Un archivo `index.md` por carpeta de proyecto, con sus imágenes al lado.
 - Markdown estándar, sin wikilinks. Imágenes con rutas relativas: `![alt](./cover.webp)`.
+- Imágenes siempre en `.webp`, a 1920×1080 (portada, cuerpo y galería).
 - Ignorar la carpeta `.obsidian/` y cualquier archivo que empiece con `_` (plantillas).
-- No publicar los que tengan `draft: true`.
+- No publicar los que tengan `draft: true`. En `npm run dev` sí se ven, para revisarlos antes de publicar.
 - Frontmatter: title, line, did (array), year, role, cover, tools (array), ai (boolean), order, draft.
 - Cuerpo: tres bloques (Diagnosis / Decision / Result) más Gallery.
 - Contenido en inglés. No reescribir ni "mejorar" el texto: renderizarlo como está.

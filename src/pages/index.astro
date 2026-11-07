@@ -52,7 +52,7 @@ const portadas = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true },
 );
 
-const deLaColeccion = (await getCollection('proyectos', ({ data }) => !data.draft))
+const deLaColeccion = (await getCollection('proyectos', ({ data }) => import.meta.env.DEV || !data.draft))
   .sort((a, b) => a.data.order - b.data.order)
   .map((entry) => {
     const carpeta = '/' + entry.filePath!.replace(/index\.md$/, '');

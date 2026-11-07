@@ -5,7 +5,7 @@ import { Image } from 'astro:assets';
 import Base from '../../layouts/base.astro';
 
 export async function getStaticPaths() {
-  const proyectos = (await getCollection('proyectos', ({ data }) => !data.draft))
+  const proyectos = (await getCollection('proyectos', ({ data }) => import.meta.env.DEV || !data.draft))
     .sort((a, b) => a.data.order - b.data.order);
 
   return proyectos.map((entry, i) => ({
